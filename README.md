@@ -14,13 +14,17 @@ OCI images are Docker images.
 
 ## Quick Start
 
-New to containers? Start with [Docker](https://docs.docker.com/get-docker/). It has the most documentation and tutorials.
+New to containers? Start with [Rocker](https://github.com/osrf/rocker) - it automatically handles GPU and display setup for you.
 
-+```bash
-+docker run --rm=true -ti -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw --runtime=nvidia \
-  -e NVIDIA_VISIBLE_DEVICES=all -e NVIDIA_DRIVER_CAPABILITIES=all  \
-  ghcr.io/j-rivero/gazebo:jetty-full gz sim --verbose
+```bash
+# Install rocker (requires Docker)
+pip install rocker
+
+# Run Gazebo with GPU and X11 display support
+rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full gz sim
 ```
+
+For other container tools or advanced usage, see the sections below.
 
 ## About the images
 
