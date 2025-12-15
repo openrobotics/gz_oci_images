@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import argparse
+import logging
 import subprocess
 
 
@@ -26,7 +27,7 @@ def _full_name(registry, name, tag):
 def _pull(full_name, dry_run):
     cmd = ["docker", "pull", full_name]
     if dry_run:
-        print(cmd)
+        logging.info(cmd)
     else:
         subprocess.check_call(cmd)
 
@@ -39,13 +40,14 @@ def _run(full_name, extra_cmd, platform=None, dry_run=False):
     cmd.append(full_name)
     cmd.extend(extra_cmd)
     if dry_run:
-        print(cmd)
+        logging.info(cmd)
     else:
         subprocess.check_call(cmd)
 
 
-def _print_gz_help(full_name, platform=None, dry_run=False,
-                   gazebo_release="", image_type=""):
+def _print_gz_help(
+    full_name, platform=None, dry_run=False, gazebo_release="", image_type=""
+):
     cmd = []
     gz_subcmd = ["sim"]
 
@@ -80,6 +82,9 @@ def parse_arguments():
     args = parser.parse_args()
 
     return args
+
+
+logging.basicConfig(level=logging.INFO)
 
 
 def main():
