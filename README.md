@@ -2,14 +2,14 @@
 
 [Open Container Initiative](https://opencontainers.org/) images for [Gazebo](https://gazebosim.org)!
 
-
 Are you looking for **Docker images**?
 You're in the right spot!
 OCI images are Docker images.
 [Here's how Docker and OCI relate](https://www.docker.com/blog/demystifying-open-container-initiative-oci-specifications/).
 
 > [!NOTE]
-> This repository is mostly a fork of the work done by @slorezt in https://github.com/sloretz/ros_oci_images
+> This repository is mostly a fork of the work done by @slorezt in
+> <https://github.com/sloretz/ros_oci_images>
 > adapted to Gazebo. All credit goes to Shane.
 
 ## Quick Start
