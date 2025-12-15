@@ -14,13 +14,16 @@ OCI images are Docker images.
 
 ## Quick Start
 
-New to containers? Start with [Rocker](https://github.com/osrf/rocker) - it automatically handles GPU and display setup for you.
+New to containers? Start with [Rocker](https://github.com/osrf/rocker) - it automatically handles GPU and display setup for you. We recommend using Rocker inside of a Python [virtual environment.](https://docs.python.org/3/library/venv.html)  
 
 ```bash
 # Install rocker (requires Docker)
 pip install rocker
 
-# Run Gazebo with GPU and X11 display support
+# Gazebo with NVIDIA GPU support and X11 display support
+rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full gz sim
+
+# Gazebo without GPU Support
 rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full gz sim
 ```
 
@@ -131,7 +134,7 @@ podman run -it --rm --device nvidia.com/gpu=all --security-opt=label=disable \
 
 ```bash
 # Basic usage
-rocker ghcr.io/j-rivero/gazebo:jetty-full gz sim -- --help
+rocker -x11 ghcr.io/j-rivero/gazebo:jetty-full gz sim
 
 # With NVIDIA GPU and X11 display
 rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full gz sim
