@@ -21,7 +21,7 @@ New to containers? Start with [Rocker](https://github.com/osrf/rocker) - it auto
 pip install rocker
 
 # Run Gazebo with GPU and X11 display support
-rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full gz sim
+rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full "gz sim --verbose"
 ```
 
 For other container tools or advanced usage, see the sections below.
