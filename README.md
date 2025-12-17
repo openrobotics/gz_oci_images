@@ -21,10 +21,14 @@ New to containers? Start with [Rocker](https://github.com/osrf/rocker) - it auto
 pip install rocker
 
 # Run Gazebo with GPU and X11 display support
-rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full gz sim
+rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full -- gz sim --verbose
 ```
 
 For other container tools or advanced usage, see the sections below.
+
+> [!TIP]
+> Having issues with graphics or GPU acceleration?
+> See the [Troubleshooting Guide](TROUBLESHOOTING.md) for step-by-step diagnostics.
 
 ## About the images
 
@@ -131,10 +135,10 @@ podman run -it --rm --device nvidia.com/gpu=all --security-opt=label=disable \
 
 ```bash
 # Basic usage
-rocker ghcr.io/j-rivero/gazebo:jetty-full gz sim -- --help
+rocker ghcr.io/j-rivero/gazebo:jetty-full -- gz sim --help
 
 # With NVIDIA GPU and X11 display
-rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full gz sim
+rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full -- gz sim
 ```
 
 [Documentation](https://github.com/osrf/rocker)
@@ -171,6 +175,10 @@ singularity run --nv --env DISPLAY=$DISPLAY -B /tmp/.X11-unix:/tmp/.X11-unix \
 ```
 
 [GPU Documentation](https://docs.sylabs.io/guides/latest/user-guide/gpu.html)
+
+## Troubleshooting
+
+See the [Troubleshooting Guide](TROUBLESHOOTING.md) for step-by-step diagnostics.
 
 ## Comparison to osrf/docker_images
 
