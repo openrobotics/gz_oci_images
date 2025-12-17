@@ -26,6 +26,10 @@ rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full gz sim
 
 For other container tools or advanced usage, see the sections below.
 
+> [!TIP]
+> Having issues with graphics or GPU acceleration?
+> See the [Troubleshooting Guide](TROUBLESHOOTING.md) for step-by-step diagnostics.
+
 ## About the images
 
 All images are updated once per week at midnight GMT on Sunday.
@@ -171,6 +175,10 @@ singularity run --nv --env DISPLAY=$DISPLAY -B /tmp/.X11-unix:/tmp/.X11-unix \
 ```
 
 [GPU Documentation](https://docs.sylabs.io/guides/latest/user-guide/gpu.html)
+
+## Troubleshooting
+
+See the [Troubleshooting Guide](TROUBLESHOOTING.md) for step-by-step diagnostics.
 
 ## Comparison to osrf/docker_images
 
