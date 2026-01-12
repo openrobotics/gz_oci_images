@@ -15,13 +15,14 @@ OCI images are Docker images.
 ## Quick Start
 
 New to containers? Start with [Rocker](https://github.com/osrf/rocker) - it automatically handles GPU and display setup for you.
+We recommend using Rocker inside of a Python [virtual environment.](https://docs.python.org/3/library/venv.html)
 
 ```bash
 # Install rocker (requires Docker)
-pip install rocker
+python3 -m venv venv && source venv/bin/activate && pip install rocker
 
 # Run Gazebo with GPU and X11 display support
-rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full -- gz sim --verbose
+rocker --x11 --nvidia gpus ghcr.io/j-rivero/gazebo:jetty-full -- gz sim --verbose
 ```
 
 For other container tools or advanced usage, see the sections below.
@@ -76,12 +77,12 @@ apptainer run --nv --env DISPLAY=$DISPLAY -B /tmp/.X11-unix:/tmp/.X11-unix \
 ### [Distrobox](https://github.com/89luca89/distrobox)
 
 **Requirements:** Docker or Podman
-**GPU Support:** NVIDIA GPUs with `--nvidia` flag, Intel and AMD GPUs automatically supported
+**GPU Support:** NVIDIA GPUs with `--nvidia gpus` flag, Intel and AMD GPUs automatically supported
 **X11 Support:** Automatic X11 and Wayland socket access
 
 ```bash
 # Create container with NVIDIA GPU support
-distrobox create --nvidia --image ghcr.io/j-rivero/gazebo:jetty-full --name jetty-full
+distrobox create --nvidia gpus --image ghcr.io/j-rivero/gazebo:jetty-full --name jetty-full
 
 # Enter the container
 distrobox enter jetty-full
@@ -130,15 +131,15 @@ podman run -it --rm --device nvidia.com/gpu=all --security-opt=label=disable \
 ### [Rocker](https://github.com/osrf/rocker)
 
 **Requirements:** Docker
-**GPU Support:** NVIDIA GPUs with `--nvidia` flag
+**GPU Support:** NVIDIA GPUs with `--nvidia gpus` flag
 **X11 Support:** Automatic with `--x11` flag
 
 ```bash
 # Basic usage
-rocker ghcr.io/j-rivero/gazebo:jetty-full -- gz sim --help
+rocker --x11 ghcr.io/j-rivero/gazebo:jetty-full -- gz sim --help
 
 # With NVIDIA GPU and X11 display
-rocker --x11 --nvidia ghcr.io/j-rivero/gazebo:jetty-full -- gz sim
+rocker --x11 --nvidia gpus ghcr.io/j-rivero/gazebo:jetty-full -- gz sim
 ```
 
 [Documentation](https://github.com/osrf/rocker)
