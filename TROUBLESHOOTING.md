@@ -96,7 +96,7 @@ Each tool has different flags:
 
 **Example with Rocker:**
 ```bash
-rocker --nvidia --x11 ghcr.io/j-rivero/gazebo:jetty-full gz sim --verbose
+rocker --nvidia --x11 ghcr.io/openrobotics/gazebo:jetty-full gz sim --verbose
 ```
 
 ### Problem: NVIDIA Container Toolkit Not Installed
@@ -163,7 +163,7 @@ sudo reboot
 
 **With Rocker:**
 ```bash
-rocker --x11 --devices /dev/dri ghcr.io/j-rivero/gazebo:jetty-full gz sim --verbose
+rocker --x11 --devices /dev/dri ghcr.io/openrobotics/gazebo:jetty-full gz sim --verbose
 ```
 
 **With Podman:**
@@ -172,7 +172,7 @@ podman run --rm -it \
   --device /dev/dri \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  ghcr.io/j-rivero/gazebo:jetty-full \
+  ghcr.io/openrobotics/gazebo:jetty-full \
   gz sim --verbose
 ```
 
@@ -277,7 +277,7 @@ podman run --rm -it \
   --security-opt=label=disable \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  ghcr.io/j-rivero/gazebo:jetty-full \
+  ghcr.io/openrobotics/gazebo:jetty-full \
   gz sim --verbose
 ```
 
@@ -295,7 +295,7 @@ podman run --rm -it \
   --security-opt=label=disable \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  ghcr.io/j-rivero/gazebo:jetty-full \
+  ghcr.io/openrobotics/gazebo:jetty-full \
   gz sim --verbose
 ```
 
@@ -308,7 +308,7 @@ podman run --rm -it \
 apptainer run --nv \
   -B /tmp/.X11-unix:/tmp/.X11-unix \
   --env DISPLAY=$DISPLAY \
-  docker://ghcr.io/j-rivero/gazebo:jetty-full \
+  docker://ghcr.io/openrobotics/gazebo:jetty-full \
   gz sim --verbose
 ```
 
@@ -318,7 +318,7 @@ apptainer run --nv \
 
 **Solution:** Create the container with NVIDIA support:
 ```bash
-distrobox create --image ghcr.io/j-rivero/gazebo:jetty-full --name gazebo --nvidia
+distrobox create --image ghcr.io/openrobotics/gazebo:jetty-full --name gazebo --nvidia
 distrobox enter gazebo
 gz sim --verbose
 ```

@@ -22,7 +22,7 @@ We recommend using Rocker inside of a Python [virtual environment.](https://docs
 python3 -m venv venv && source venv/bin/activate && pip install rocker
 
 # Run Gazebo with GPU and X11 display support
-rocker --x11 --nvidia gpus ghcr.io/j-rivero/gazebo:jetty-full -- gz sim --verbose
+rocker --x11 --nvidia ghcr.io/openrobotics/gazebo:jetty-full -- gz sim --verbose
 ```
 
 For other container tools or advanced usage, see the sections below.
@@ -42,17 +42,17 @@ All images are based on Ubuntu.
 | Image           | amd64 | arm64 v8 | Full Image Name                                |
 |-----------------|-------|----------|-----------------------------------------------|
 | **[Gazebo Jetty (LTS)](https://gazebosim.org/docs/jetty)** | | | |
-| core            | ✅     | ✅        | `ghcr.io/j-rivero/gazebo:jetty-core`           |
-| full            | ✅     | ✅        | `ghcr.io/j-rivero/gazebo:jetty-full`           |
+| core            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:jetty-core`           |
+| full            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:jetty-full`           |
 | **[Gazebo Ionic](https://gazebosim.org/docs/ionic)** | | | |
-| core            | ✅     | ✅        | `ghcr.io/j-rivero/gazebo:ionic-core`           |
-| full            | ✅     | ✅        | `ghcr.io/j-rivero/gazebo:ionic-full`           |
+| core            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:ionic-core`           |
+| full            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:ionic-full`           |
 | **[Gazebo Harmonic (LTS)](https://gazebosim.org/docs/harmonic)** | | | |
-| core            | ✅     | ✅        | `ghcr.io/j-rivero/gazebo:harmonic-core`        |
-| full            | ✅     | ✅        | `ghcr.io/j-rivero/gazebo:harmonic-full`        |
+| core            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:harmonic-core`        |
+| full            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:harmonic-full`        |
 | **[Gazebo Fortress (LTS)](https://gazebosim.org/docs/fortress)** | | | |
-| core            | ✅     | ✅        | `ghcr.io/j-rivero/gazebo:fortress-core`        |
-| full            | ✅     | ✅        | `ghcr.io/j-rivero/gazebo:fortress-full`        |
+| core            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:fortress-core`        |
+| full            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:fortress-full`        |
 
 ## Using with other OCI compatible tools
 
@@ -65,11 +65,11 @@ Used containers for a while? Other tools might be a better fit for your use case
 
 ```bash
 # Basic usage
-apptainer run docker://ghcr.io/j-rivero/gazebo:jetty-full gz sim --help
+apptainer run docker://ghcr.io/openrobotics/gazebo:jetty-full gz sim --help
 
 # With NVIDIA GPU and X11 display
 apptainer run --nv --env DISPLAY=$DISPLAY -B /tmp/.X11-unix:/tmp/.X11-unix \
-  docker://ghcr.io/j-rivero/gazebo:jetty-full gz sim
+  docker://ghcr.io/openrobotics/gazebo:jetty-full gz sim
 ```
 
 [GPU Documentation](https://apptainer.org/docs/user/main/gpu.html)
@@ -82,7 +82,7 @@ apptainer run --nv --env DISPLAY=$DISPLAY -B /tmp/.X11-unix:/tmp/.X11-unix \
 
 ```bash
 # Create container with NVIDIA GPU support
-distrobox create --nvidia gpus --image ghcr.io/j-rivero/gazebo:jetty-full --name jetty-full
+distrobox create --nvidia --image ghcr.io/openrobotics/gazebo:jetty-full --name jetty-full
 
 # Enter the container
 distrobox enter jetty-full
@@ -100,12 +100,12 @@ gz sim
 
 ```bash
 # Basic usage
-nerdctl run --rm=true -ti ghcr.io/j-rivero/gazebo:jetty-full gz sim --help
+nerdctl run --rm=true -ti ghcr.io/openrobotics/gazebo:jetty-full gz sim --help
 
 # With GPU and X11 display
 nerdctl run -it --rm --gpus all -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  ghcr.io/j-rivero/gazebo:jetty-full gz sim
+  ghcr.io/openrobotics/gazebo:jetty-full gz sim
 ```
 
 [GPU Documentation](https://github.com/containerd/nerdctl/blob/main/docs/gpu.md)
@@ -118,12 +118,12 @@ nerdctl run -it --rm --gpus all -e DISPLAY=$DISPLAY \
 
 ```bash
 # Basic usage
-podman run --rm=true -ti ghcr.io/j-rivero/gazebo:jetty-full gz sim --help
+podman run --rm=true -ti ghcr.io/openrobotics/gazebo:jetty-full gz sim --help
 
 # With NVIDIA GPU and X11 display
 podman run -it --rm --device nvidia.com/gpu=all --security-opt=label=disable \
   -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
-  ghcr.io/j-rivero/gazebo:jetty-full gz sim
+  ghcr.io/openrobotics/gazebo:jetty-full gz sim
 ```
 
 [GPU Documentation](https://podman-desktop.io/docs/podman/gpu)
@@ -136,10 +136,8 @@ podman run -it --rm --device nvidia.com/gpu=all --security-opt=label=disable \
 
 ```bash
 # Basic usage
-rocker --x11 ghcr.io/j-rivero/gazebo:jetty-full -- gz sim --help
 
 # With NVIDIA GPU and X11 display
-rocker --x11 --nvidia gpus ghcr.io/j-rivero/gazebo:jetty-full -- gz sim
 ```
 
 [Documentation](https://github.com/osrf/rocker)
@@ -151,12 +149,12 @@ rocker --x11 --nvidia gpus ghcr.io/j-rivero/gazebo:jetty-full -- gz sim
 
 ```bash
 # Pull and run basic usage
-sarus pull ghcr.io/j-rivero/gazebo:jetty-full
-sarus run -t ghcr.io/j-rivero/gazebo:jetty-full gz sim --help
+sarus pull ghcr.io/openrobotics/gazebo:jetty-full
+sarus run -t ghcr.io/openrobotics/gazebo:jetty-full gz sim --help
 
 # With X11 display (GPU configured at system level)
 sarus run --mount=type=bind,source=/tmp/.X11-unix,destination=/tmp/.X11-unix \
-  ghcr.io/j-rivero/gazebo:jetty-full gz sim
+  ghcr.io/openrobotics/gazebo:jetty-full gz sim
 ```
 
 [GPU Documentation](https://sarus.readthedocs.io/en/stable/config/nvidia-container-toolkit.html)
@@ -168,11 +166,11 @@ sarus run --mount=type=bind,source=/tmp/.X11-unix,destination=/tmp/.X11-unix \
 
 ```bash
 # Basic usage
-singularity run docker://ghcr.io/j-rivero/gazebo:jetty-full gz sim --help
+singularity run docker://ghcr.io/openrobotics/gazebo:jetty-full gz sim --help
 
 # With NVIDIA GPU and X11 display
 singularity run --nv --env DISPLAY=$DISPLAY -B /tmp/.X11-unix:/tmp/.X11-unix \
-  docker://ghcr.io/j-rivero/gazebo:jetty-full gz sim
+  docker://ghcr.io/openrobotics/gazebo:jetty-full gz sim
 ```
 
 [GPU Documentation](https://docs.sylabs.io/guides/latest/user-guide/gpu.html)

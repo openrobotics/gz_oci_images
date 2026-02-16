@@ -9,7 +9,7 @@ on:
         default: "harmonic"
       image_registry:
         description: The container registry to push to (must be ghcr.io)
-        default: "ghcr.io/j-rivero"
+        default: "ghcr.io/openrobotics"
         type: string
       image_name:
         description: The name of the image
@@ -23,7 +23,7 @@ on:
         required: true
       image_registry:
         description: The container registry to push to (must be ghcr.io)
-        default: "ghcr.io/j-rivero"
+        default: "ghcr.io/openrobotics"
         type: string
       image_name:
         description: The name of the image

@@ -65,7 +65,7 @@ earthly +jetty-multiarch --registry=localhost/ --image_name=gazebo
 
 ```bash
 # Test all variants of a release (pulls from registry)
-./scripts/test_images.py --release jetty --registry ghcr.io/j-rivero --image-name gazebo
+./scripts/test_images.py --release jetty --registry ghcr.io/openrobotics --image-name gazebo
 
 # Dry run to see commands
 ./scripts/test_images.py --release jetty --dry-run
@@ -148,5 +148,5 @@ black scripts/
 
 # Run image with GPU (example for testing)
 docker run --rm -ti --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=all \
-  ghcr.io/j-rivero/gazebo:jetty-full gz sim --verbose
+  ghcr.io/openrobotics/gazebo:jetty-full gz sim --verbose
 ```
