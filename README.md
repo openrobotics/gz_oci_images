@@ -22,7 +22,7 @@ We recommend using Rocker inside of a Python [virtual environment.](https://docs
 python3 -m venv venv && source venv/bin/activate && pip install rocker
 
 # Run Gazebo with GPU and X11 display support
-rocker --x11 --nvidia ghcr.io/openrobotics/gazebo:jetty-full -- gz sim --verbose
+rocker --x11 --nvidia gpus ghcr.io/openrobotics/gazebo:jetty-full -- gz sim --verbose
 ```
 
 For other container tools or advanced usage, see the sections below.

@@ -87,7 +87,7 @@ Each tool has different flags:
 
 | Tool | Required Flag |
 |------|---------------|
-| Rocker | `--nvidia` |
+| Rocker | `--nvidia gpus` |
 | Podman | `--device nvidia.com/gpu=all` |
 | nerdctl | `--gpus all` |
 | Apptainer | `--nv` |
@@ -96,7 +96,7 @@ Each tool has different flags:
 
 **Example with Rocker:**
 ```bash
-rocker --nvidia --x11 ghcr.io/openrobotics/gazebo:jetty-full gz sim --verbose
+rocker --nvidia gpus --x11 ghcr.io/openrobotics/gazebo:jetty-full gz sim --verbose
 ```
 
 ### Problem: NVIDIA Container Toolkit Not Installed
