@@ -59,6 +59,8 @@ def _print_gz_help(
 
     if image_type == "core":
         cmd += ["sdf"]
+    elif image_type == "server-only":
+        cmd = ["/usr/libexec/gz/sim10/gz-sim-server"]
     elif image_type == "full":
         cmd += gz_subcmd
 
@@ -102,6 +104,11 @@ def main():
         ("core", arm64),
         ("full", arm64),
     ]
+    if gazebo_release == "jetty":
+        combos += [
+            ("server-only", amd64),
+            ("server-only", arm64),
+        ]
     for image, platform in combos:
         tag = f"{gazebo_release}-{image}"
         package = f"gz-{gazebo_release}"

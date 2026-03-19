@@ -43,6 +43,7 @@ All images are based on Ubuntu.
 |-----------------|-------|----------|-----------------------------------------------|
 | **[Gazebo Jetty (LTS)](https://gazebosim.org/docs/jetty)** | | | |
 | core            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:jetty-core`           |
+| server-only     | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:jetty-server-only`    |
 | full            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:jetty-full`           |
 | **[Gazebo Ionic](https://gazebosim.org/docs/ionic)** | | | |
 | core            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:ionic-core`           |

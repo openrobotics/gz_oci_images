@@ -22,8 +22,9 @@ This project uses **Earthly** (v0.8+) as the primary build tool, NOT traditional
 └── lib/Earthfile                     # SAVE_IMAGE_AND_DATE function for tagging & pushing
 ```
 
-**Key Pattern:** Each Gazebo release has TWO image variants:
+**Key Pattern:** Each Gazebo release has image variants:
 - `core` - Minimal install (gz-tools, libsdformat, python bindings)
+- `server-only` - Headless server without GUI/Qt dependencies (Jetty only: `gz-sim10-server`)
 - `full` - Complete Gazebo suite (all gz-* packages)
 
 ### Multi-Architecture Support
