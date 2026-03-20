@@ -120,7 +120,8 @@ gazebo-server-only:
     ARG GAZEBO_RELEASE
     FROM --pass-args +gazebo-core
 
-    # Install Gazebo server-only package (no GUI/Qt dependencies)
+    # Install Gazebo server-only package (no GUI/Qt dependencies).
+    # gz-sim10-server is Jetty-specific; update package name for future releases.
     DO apt+INSTALL --packages=gz-sim10-server
 
     SAVE IMAGE localhost/gazebo-intermediate:${GAZEBO_RELEASE}-server-only

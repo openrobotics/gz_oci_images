@@ -60,9 +60,16 @@ def _print_gz_help(
     if image_type == "core":
         cmd += ["sdf"]
     elif image_type == "server-only":
+        # Invoke the server binary directly (not through the gz CLI wrapper).
+        # sim10 path is Jetty-specific; update for future releases.
         cmd = ["/usr/libexec/gz/sim10/gz-sim-server"]
     elif image_type == "full":
         cmd += gz_subcmd
+    else:
+        raise ValueError(
+            f"Unknown image_type '{image_type}' for release '{gazebo_release}'. "
+            f"Add handling for this variant in _print_gz_help()."
+        )
 
     cmd += ["--help"]
 
@@ -111,7 +118,10 @@ def main():
         ]
     for image, platform in combos:
         tag = f"{gazebo_release}-{image}"
-        package = f"gz-{gazebo_release}"
+        if image == "server-only":
+            package = "gz-sim10-server"
+        else:
+            package = f"gz-{gazebo_release}"
         full_name = _full_name(args.registry, args.image_name, tag)
         _pull(full_name, dry_run)
         _print_pkg_version(full_name, package, platform, args.dry_run)

@@ -37,7 +37,7 @@ This project uses **Earthly** (v0.8+) as the primary build tool, NOT traditional
 
 ### Release-Specific Package Handling
 
-Each Gazebo release has different package names and Ubuntu base images. The logic in [gazebo/Earthfile](gazebo/Earthfile) lines 93-106 shows conditional package installation:
+Each Gazebo release has different package names and Ubuntu base images. The logic in the `gazebo-core` target in [gazebo/Earthfile](gazebo/Earthfile) shows conditional package installation:
 
 - **Fortress** (LTS): Ubuntu 22.04, uses `libignition-tools-dev` (legacy naming)
 - **Harmonic** (LTS): Ubuntu 22.04, `gz-tools2`, `libsdformat14-dev`
@@ -48,7 +48,7 @@ Each Gazebo release has different package names and Ubuntu base images. The logi
 
 ### Command Naming: ign vs gz
 
-Fortress uses the legacy `ign` command; all newer releases use `gz`. This affects testing in [scripts/test_images.py](scripts/test_images.py#L57-L61).
+Fortress uses the legacy `ign` command; all newer releases use `gz`. This affects testing in the `_print_gz_help` function in [scripts/test_images.py](scripts/test_images.py).
 
 ## Developer Workflows
 
@@ -132,7 +132,7 @@ This allows users to pin to exact build dates or track latest automatically.
 1. **Don't use `docker build`**: All image builds go through Earthly targets
 2. **Platform mismatch**: When testing locally, ensure QEMU is installed for cross-arch
 3. **Apt cache staleness**: `is_new_version_available.py` assumes `apt-get update` was already run
-4. **Hardcoded architectures**: Platform list appears in multiple places ([Earthfile](Earthfile) lines 29-46, [test_images.py](scripts/test_images.py#L92-L98))
+4. **Hardcoded architectures**: Platform list appears in multiple places ([Earthfile](Earthfile), `combos` list in [test_images.py](scripts/test_images.py))
 5. **GPU testing**: Images are built for GPU support but CI only validates basic command execution
 
 ## Quick Reference Commands
