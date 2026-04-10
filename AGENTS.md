@@ -4,7 +4,7 @@
 
 This repository builds multi-architecture OCI/Docker images for [Gazebo](https://gazebosim.org) robotics simulator using [Earthly](https://docs.earthly.dev/). It's a fork of the ROS OCI images work by @sloretz, adapted for Gazebo's unique versioning and release cadence.
 
-**Core Purpose:** Automated weekly builds and release-triggered updates of Gazebo container images pushed to GitHub Packages (ghcr.io).
+**Core Purpose:** Automated scheduled and release-triggered updates of Gazebo container images pushed to GitHub Packages (ghcr.io), with weekly named-release builds and daily rotary builds.
 
 ## Architecture & Build System
 
@@ -15,7 +15,7 @@ This project uses **Earthly** (v0.8+) as the primary build tool, NOT traditional
 **Build Hierarchy:**
 ```
 ./Earthfile (root)                    # Defines platforms & orchestrates multi-arch builds
-├── gazebo/Earthfile                  # Gazebo release targets (jetty, ionic, harmonic, fortress)
+├── gazebo/Earthfile                  # Gazebo release targets (jetty, rotary, ionic, harmonic, fortress)
 │   ├── Uses +GAZEBO_BINARY_IMAGES    # Function to generate core/full variants
 │   └── Imports from apt/ and lib/
 ├── apt/Earthfile                     # Reusable INSTALL function for apt packages
@@ -42,8 +42,9 @@ Each Gazebo release has different package names and Ubuntu base images. The logi
 - **Harmonic** (LTS): Ubuntu 22.04, `gz-tools2`, `libsdformat14-dev`
 - **Ionic**: Ubuntu 24.04, `gz-tools2`, `libsdformat15-dev`, `sdformat15-cli`
 - **Jetty** (LTS): Ubuntu 24.04, `gz-tools2`, `libsdformat16-dev`, `sdformat16-cli`
+- **Rotary** (Rolling): Ubuntu 24.04, `ubuntu-nightly` layered on top of `ubuntu-stable`, `gz-rotary-tools`, `libgz-rotary-sdformat-dev`, `gz-rotary-sdformat-cli`
 
-**Why this matters:** When adding new Gazebo releases, you MUST update conditional logic with correct package versions and Ubuntu base images.
+**Why this matters:** When adding new Gazebo releases, you MUST update conditional logic with correct package versions, Ubuntu base images, and any extra apt repo layers when a release needs more than `ubuntu-stable`.
 
 ### Command Naming: ign vs gz
 
@@ -89,15 +90,15 @@ Returns "YES" or "NO" - used by `build-one-gazebo-release-if-necessary.yaml` wor
 
 ### Three-Tier Workflow Architecture
 
-1. **Weekly builds** (`ci-amd64-{release}.yaml`): Scheduled full rebuilds every Sunday at midnight GMT
-2. **On-demand builds** (`{release}-build.yaml`): Manually triggered via workflow_dispatch
+1. **PR validation** (`ci-amd64-{release}.yaml`): Validates amd64 image builds on pull requests
+2. **Release builds** (`{release}-build.yaml`): Manually triggered via workflow_dispatch, scheduled weekly for named releases, and scheduled daily for rotary
 3. **Conditional builds** (`{release}-build-if-necessary.yaml`): Triggered by package sync detection
 
 **Pattern to add new release:**
-1. Add target to [gazebo/Earthfile](gazebo/Earthfile) with correct Ubuntu version
+1. Add target to [gazebo/Earthfile](gazebo/Earthfile) with correct Ubuntu version and apt repo configuration
 2. Update root [Earthfile](Earthfile) with new target + multiarch variant
 3. Copy & rename workflow files (3 files per release)
-4. Update [scripts/test_images.py](scripts/test_images.py) architecture support list
+4. Update any release lists in workflows and docs; only change [scripts/test_images.py](scripts/test_images.py) when a release needs custom command handling like Fortress
 
 ### CI-Specific Concerns
 
@@ -141,7 +142,7 @@ This allows users to pin to exact build dates or track latest automatically.
 ./scripts/install_dependencies.bash
 
 # Build all releases locally
-earthly +jetty-multiarch +ionic-multiarch +harmonic-multiarch +fortress-multiarch
+earthly +rotary-multiarch +jetty-multiarch +ionic-multiarch +harmonic-multiarch +fortress-multiarch
 
 # Format Python code
 black scripts/

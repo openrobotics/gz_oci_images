@@ -11,6 +11,7 @@ on:
         - harmonic
         - ionic
         - jetty
+        - rotary
       image_registry:
         description: The container registry to pull from
         default: "ghcr.io/openrobotics"

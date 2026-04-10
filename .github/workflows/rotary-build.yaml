@@ -1,0 +1,16 @@
+name: Gazebo Rotary Build
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'  # 06:00 daily.
+
+permissions:
+      packages: write
+      contents: read
+
+jobs:
+  build-and-deploy-rotary:
+    uses: ./.github/workflows/build-one-gazebo-release.yaml
+    with:
+      gazebo_release: rotary

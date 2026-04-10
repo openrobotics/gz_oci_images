@@ -33,14 +33,15 @@ For other container tools or advanced usage, see the sections below.
 
 ## About the images
 
-All images are updated once per week at midnight GMT on Sunday.
-Additionally each Gazebo release's images are updated automatically after a sync.
+Named Gazebo release images are updated once per week at midnight GMT on Sunday.
+Additionally each Gazebo release's images are updated automatically after a sync, and rotary images are rebuilt daily from the nightly repository.
 
 The Gazebo releases provide different variants based on the included libraries.
 All images are based on Ubuntu.
 
 | Image           | amd64 | arm64 v8 | Full Image Name                                |
 |-----------------|-------|----------|-----------------------------------------------|
+| **Stable distributions** | | | |
 | **[Gazebo Jetty (LTS)](https://gazebosim.org/docs/jetty)** | | | |
 | core            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:jetty-core`           |
 | full            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:jetty-full`           |
@@ -53,6 +54,11 @@ All images are based on Ubuntu.
 | **[Gazebo Fortress (LTS)](https://gazebosim.org/docs/fortress)** | | | |
 | core            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:fortress-core`        |
 | full            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:fortress-full`        |
+| **Rolling / Nightly** | | | |
+| **Gazebo Rotary** | | | |
+| core            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:rotary-core`          |
+| full            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:rotary-full`          |
+
 
 ## Using with other OCI compatible tools
 

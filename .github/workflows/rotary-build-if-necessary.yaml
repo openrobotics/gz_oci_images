@@ -1,0 +1,16 @@
+name: Gazebo Rotary Build If Necessary
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours.
+
+permissions:
+      packages: write
+      contents: read
+
+jobs:
+  build-and-deploy-rotary:
+    uses: ./.github/workflows/build-one-gazebo-release-if-necessary.yaml
+    with:
+      gazebo_release: rotary

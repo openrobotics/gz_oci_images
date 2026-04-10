@@ -13,6 +13,17 @@ jetty:
         --UBUNTU_IMAGE='ubuntu:noble'
 
 
+rotary:
+    ARG image_name='gazebo'
+    ARG registry='localhost/'
+    DO +GAZEBO_BINARY_IMAGES \
+        --registry=$registry \
+        --image_name=$image_name \
+        --GAZEBO_RELEASE='rotary' \
+        --UBUNTU_IMAGE='ubuntu:noble' \
+        --apt_repo_suffix='nightly'
+
+
 ionic:
     ARG image_name='gazebo'
     ARG registry='localhost/'
@@ -49,6 +60,7 @@ GAZEBO_BINARY_IMAGES:
     ARG --required registry
     ARG --required GAZEBO_RELEASE
     ARG --required UBUNTU_IMAGE
+    ARG apt_repo_suffix=stable
     ARG use_testing_repo=false
 
     # gazebo-core
@@ -63,6 +75,7 @@ GAZEBO_BINARY_IMAGES:
 gazebo-core:
     ARG UBUNTU_IMAGE
     ARG GAZEBO_RELEASE
+    ARG apt_repo_suffix=stable
     ARG use_testing_repo
 
     FROM $UBUNTU_IMAGE
@@ -82,6 +95,9 @@ gazebo-core:
     RUN set -eux; \
         curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg; \
         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] https://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null; \
+        if [ "$apt_repo_suffix" != "stable" ]; then \
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] https://packages.osrfoundation.org/gazebo/ubuntu-${apt_repo_suffix} $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-${apt_repo_suffix}.list > /dev/null; \
+        fi; \
         apt-get update
 
     # Setup environment
@@ -100,6 +116,8 @@ gazebo-core:
           apt-get install -y libsdformat15-dev python3-sdformat15 sdformat15-cli gz-tools2; \
         elif [ "$GAZEBO_RELEASE" = "jetty" ]; then \
           apt-get install -y libsdformat16-dev python3-sdformat16 sdformat16-cli gz-tools2; \
+        elif [ "$GAZEBO_RELEASE" = "rotary" ]; then \
+          apt-get install -y libgz-rotary-sdformat-dev python3-gz-rotary-sdformat gz-rotary-sdformat-cli gz-rotary-tools; \
         else \
           echo "Unknown distro ${GAZEBO_RELEASE}"; \
           exit 1; \

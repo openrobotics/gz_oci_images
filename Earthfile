@@ -9,6 +9,12 @@ jetty:
     BUILD --pass-args gazebo+jetty
 
 
+rotary:
+    ARG registry='localhost/'
+    ARG image_name='gazebo'
+    BUILD --pass-args gazebo+rotary
+
+
 ionic:
     ARG registry='localhost/'
     ARG image_name='gazebo'
@@ -31,6 +37,12 @@ jetty-multiarch:
     ARG registry='localhost/'
     ARG image_name='gazebo'
     BUILD --pass-args --platform=linux/amd64 --platform=linux/arm64/v8 +jetty
+
+
+rotary-multiarch:
+    ARG registry='localhost/'
+    ARG image_name='gazebo'
+    BUILD --pass-args --platform=linux/amd64 --platform=linux/arm64/v8 +rotary
 
 
 ionic-multiarch:
