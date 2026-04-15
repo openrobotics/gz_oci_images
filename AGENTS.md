@@ -88,16 +88,16 @@ Returns "YES" or "NO" - used by `build-one-gazebo-release-if-necessary.yaml` wor
 
 ## GitHub Actions Workflows
 
-### Three-Tier Workflow Architecture
+### Workflow Architecture
 
 1. **PR validation** (`ci-amd64-{release}.yaml`): Validates amd64 image builds on pull requests
 2. **Release builds** (`{release}-build.yaml`): Manually triggered via workflow_dispatch, scheduled weekly for named releases, and scheduled daily for rotary
-3. **Conditional builds** (`{release}-build-if-necessary.yaml`): Triggered by package sync detection
+3. **Conditional builds** (`{release}-build-if-necessary.yaml`): Triggered by package sync detection for named releases
 
 **Pattern to add new release:**
 1. Add target to [gazebo/Earthfile](gazebo/Earthfile) with correct Ubuntu version and apt repo configuration
 2. Update root [Earthfile](Earthfile) with new target + multiarch variant
-3. Copy & rename workflow files (3 files per release)
+3. Copy & rename workflow files as needed; named releases use three workflows, while rotary uses PR validation plus the daily build workflow
 4. Update any release lists in workflows and docs; only change [scripts/test_images.py](scripts/test_images.py) when a release needs custom command handling like Fortress
 
 ### CI-Specific Concerns

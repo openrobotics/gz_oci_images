@@ -34,7 +34,8 @@ For other container tools or advanced usage, see the sections below.
 ## About the images
 
 Named Gazebo release images are updated once per week at midnight GMT on Sunday.
-Additionally each Gazebo release's images are updated automatically after a sync, and rotary images are rebuilt daily from the nightly repository.
+Named Gazebo release images are also updated automatically after a sync.
+Rotary images are rebuilt daily from the nightly repository.
 
 The Gazebo releases provide different variants based on the included libraries.
 All images are based on Ubuntu.
