@@ -55,6 +55,12 @@ GAZEBO_BINARY_IMAGES:
     FROM --pass-args +gazebo-core
     DO lib+SAVE_IMAGE_AND_DATE --fully_qualified_name=${registry}${image_name}:${GAZEBO_RELEASE}-core
 
+    # gazebo-server-only (only for releases that have it)
+    IF [ "$GAZEBO_RELEASE" = "jetty" ]
+        FROM --pass-args +gazebo-server-only
+        DO lib+SAVE_IMAGE_AND_DATE --fully_qualified_name=${registry}${image_name}:${GAZEBO_RELEASE}-server-only
+    END
+
     # gazebo-full
     FROM --pass-args +gazebo-full
     DO lib+SAVE_IMAGE_AND_DATE --fully_qualified_name=${registry}${image_name}:${GAZEBO_RELEASE}-full
@@ -108,6 +114,17 @@ gazebo-core:
     CMD ["bash"]
 
     SAVE IMAGE localhost/gazebo-intermediate:${GAZEBO_RELEASE}-core
+
+
+gazebo-server-only:
+    ARG GAZEBO_RELEASE
+    FROM --pass-args +gazebo-core
+
+    # Install Gazebo server-only package (no GUI/Qt dependencies).
+    # gz-sim10-server is Jetty-specific; update package name for future releases.
+    DO apt+INSTALL --packages=gz-sim10-server
+
+    SAVE IMAGE localhost/gazebo-intermediate:${GAZEBO_RELEASE}-server-only
 
 
 gazebo-full:
