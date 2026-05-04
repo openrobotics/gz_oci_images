@@ -1,0 +1,19 @@
+name: Gazebo Rotary Build
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 15:00 gives time to build all the packages starting at 09:10
+    # Nightly package build start is defined in:
+    # https://github.com/gazebo-tooling/release-tools/blob/ef6a57635ba18100f041b90dbc4b0197a73922d4/jenkins-scripts/dsl/_configs_/Globals.groovy#L22
+    - cron: '0 15 * * *'
+
+permissions:
+      packages: write
+      contents: read
+
+jobs:
+  build-and-deploy-rotary:
+    uses: ./.github/workflows/build-one-gazebo-release.yaml
+    with:
+      gazebo_release: rotary
