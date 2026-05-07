@@ -58,8 +58,12 @@ All images are based on Ubuntu.
 | full            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:fortress-full`        |
 | **Rolling / Nightly** | | | |
 | **Gazebo Rotary** | | | |
-| core            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:rotary-core`          |
-| full            | ✅     | ✅        | `ghcr.io/openrobotics/gazebo:rotary-full`          |
+| core            | ✅     | ❌        | `ghcr.io/openrobotics/gazebo:rotary-core`          |
+| full            | ✅     | ❌        | `ghcr.io/openrobotics/gazebo:rotary-full`          |
+
+
+> [!NOTE]
+> Rotary images are currently published for amd64 only because the required arm64 packages are not generated for rotary
 
 
 ## Using with other OCI compatible tools
