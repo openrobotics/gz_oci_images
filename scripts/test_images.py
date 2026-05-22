@@ -96,26 +96,31 @@ def parse_arguments():
 logging.basicConfig(level=logging.INFO)
 
 
+def _image_platform_combos(gazebo_release):
+    amd64 = "linux/amd64"
+    arm64 = "linux/arm64/v8"
+
+    # Rotary packages are not available on arm64, so its images are amd64-only.
+    platforms = [amd64] if gazebo_release == "rotary" else [amd64, arm64]
+
+    combos = []
+    for platform in platforms:
+        combos.extend([("core", platform), ("full", platform)])
+
+    if gazebo_release == "jetty":
+        for platform in platforms:
+            combos.append(("server-only", platform))
+
+    return combos
+
+
 def main():
     args = parse_arguments()
 
     gazebo_release = args.release.lower()
     dry_run = args.dry_run
 
-    amd64 = "linux/amd64"
-    arm64 = "linux/arm64/v8"
-
-    combos = [
-        ("core", amd64),
-        ("full", amd64),
-        ("core", arm64),
-        ("full", arm64),
-    ]
-    if gazebo_release == "jetty":
-        combos += [
-            ("server-only", amd64),
-            ("server-only", arm64),
-        ]
+    combos = _image_platform_combos(gazebo_release)
     for image, platform in combos:
         tag = f"{gazebo_release}-{image}"
         if image == "server-only":

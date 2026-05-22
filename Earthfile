@@ -42,7 +42,7 @@ jetty-multiarch:
 rotary-multiarch:
     ARG registry='localhost/'
     ARG image_name='gazebo'
-    BUILD --pass-args --platform=linux/amd64 --platform=linux/arm64/v8 +rotary
+    BUILD --pass-args --platform=linux/amd64 +rotary
 
 
 ionic-multiarch:
