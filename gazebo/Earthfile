@@ -68,7 +68,7 @@ GAZEBO_BINARY_IMAGES:
     DO lib+SAVE_IMAGE_AND_DATE --fully_qualified_name=${registry}${image_name}:${GAZEBO_RELEASE}-core
 
     # gazebo-server-only (only for releases that have it)
-    IF [ "$GAZEBO_RELEASE" = "jetty" ]
+    IF [ "$GAZEBO_RELEASE" = "jetty" ] || [ "$GAZEBO_RELEASE" = "rotary" ]
         FROM --pass-args +gazebo-server-only
         DO lib+SAVE_IMAGE_AND_DATE --fully_qualified_name=${registry}${image_name}:${GAZEBO_RELEASE}-server-only
     END
@@ -138,9 +138,19 @@ gazebo-server-only:
     ARG GAZEBO_RELEASE
     FROM --pass-args +gazebo-core
 
-    # Install Gazebo server-only package (no GUI/Qt dependencies).
-    # gz-sim10-server is Jetty-specific; update package name for future releases.
-    DO apt+INSTALL --packages=gz-sim10-server
+    # Install the release-specific Gazebo server package without the GUI stack.
+    RUN set -eux; \
+        if [ "$GAZEBO_RELEASE" = "jetty" ]; then \
+          package=gz-sim10-server; \
+        elif [ "$GAZEBO_RELEASE" = "rotary" ]; then \
+          package=gz-sim-server; \
+        else \
+          echo "Server-only image is not supported for ${GAZEBO_RELEASE}"; \
+          exit 1; \
+        fi; \
+        apt-get update; \
+        apt-get install -y --no-install-recommends "$package"; \
+        rm -rf /var/lib/apt/lists/*
 
     SAVE IMAGE localhost/gazebo-intermediate:${GAZEBO_RELEASE}-server-only
 

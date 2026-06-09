@@ -59,6 +59,7 @@ All images are based on Ubuntu.
 | **Rolling / Nightly** | | | |
 | **Gazebo Rotary** | | | |
 | core            | ✅     | ❌        | `ghcr.io/openrobotics/gazebo:rotary-core`          |
+| server-only     | ✅     | ❌        | `ghcr.io/openrobotics/gazebo:rotary-server-only`   |
 | full            | ✅     | ❌        | `ghcr.io/openrobotics/gazebo:rotary-full`          |
 
 

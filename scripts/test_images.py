@@ -19,6 +19,17 @@ import logging
 import subprocess
 
 
+SERVER_ONLY_PACKAGE_BY_RELEASE = {
+    "jetty": "gz-sim10-server",
+    "rotary": "gz-sim-server",
+}
+
+SERVER_ONLY_BINARY_BY_RELEASE = {
+    "jetty": "/usr/libexec/gz/sim10/gz-sim-server",
+    "rotary": "/usr/libexec/gz/sim/gz-sim-server",
+}
+
+
 # TODO(j-rivero) share implementation with build_images.py
 def _full_name(registry, name, tag):
     return f"{registry}/{name}:{tag}"
@@ -60,9 +71,7 @@ def _print_gz_help(
     if image_type == "core":
         cmd += ["sdf"]
     elif image_type == "server-only":
-        # Invoke the server binary directly (not through the gz CLI wrapper).
-        # sim10 path is Jetty-specific; update for future releases.
-        cmd = ["/usr/libexec/gz/sim10/gz-sim-server"]
+        cmd = [_server_only_binary(gazebo_release)]
     elif image_type == "full":
         cmd += gz_subcmd
     else:
@@ -79,6 +88,26 @@ def _print_gz_help(
 def _print_pkg_version(full_name, pkg, platform=None, dry_run=False):
     cmd = ["apt-cache", "show", pkg]
     _run(full_name, cmd, platform, dry_run)
+
+
+def _server_only_binary(gazebo_release):
+    try:
+        return SERVER_ONLY_BINARY_BY_RELEASE[gazebo_release]
+    except KeyError as exc:
+        raise ValueError(
+            f"Unknown server-only binary for release '{gazebo_release}'. "
+            "Add it to SERVER_ONLY_BINARY_BY_RELEASE."
+        ) from exc
+
+
+def _server_only_package(gazebo_release):
+    try:
+        return SERVER_ONLY_PACKAGE_BY_RELEASE[gazebo_release]
+    except KeyError as exc:
+        raise ValueError(
+            f"Unknown server-only package for release '{gazebo_release}'. "
+            "Add it to SERVER_ONLY_PACKAGE_BY_RELEASE."
+        ) from exc
 
 
 def parse_arguments():
@@ -107,7 +136,7 @@ def _image_platform_combos(gazebo_release):
     for platform in platforms:
         combos.extend([("core", platform), ("full", platform)])
 
-    if gazebo_release == "jetty":
+    if gazebo_release in SERVER_ONLY_PACKAGE_BY_RELEASE:
         for platform in platforms:
             combos.append(("server-only", platform))
 
@@ -124,7 +153,7 @@ def main():
     for image, platform in combos:
         tag = f"{gazebo_release}-{image}"
         if image == "server-only":
-            package = "gz-sim10-server"
+            package = _server_only_package(gazebo_release)
         else:
             package = f"gz-{gazebo_release}"
         full_name = _full_name(args.registry, args.image_name, tag)
