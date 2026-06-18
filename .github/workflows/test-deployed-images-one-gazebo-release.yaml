@@ -57,6 +57,8 @@ jobs:
           swap-storage: true
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+        with:
+          persist-credentials: false
 
       - name: Login to Container Registry
         if: ${{ inputs.image_registry != 'localhost' }}
@@ -76,4 +78,8 @@ jobs:
 
       - name: Test all images
         run: |
-          python3 scripts/test_images.py --registry ${{ inputs.image_registry }} --image-name ${{ inputs.image_name }} --release ${{ inputs.gazebo_release }}
+          python3 scripts/test_images.py --registry ${INPUTS_IMAGE_REGISTRY} --image-name ${INPUTS_IMAGE_NAME} --release ${INPUTS_GAZEBO_RELEASE}
+        env:
+          INPUTS_IMAGE_REGISTRY: ${{ inputs.image_registry }}
+          INPUTS_IMAGE_NAME: ${{ inputs.image_name }}
+          INPUTS_GAZEBO_RELEASE: ${{ inputs.gazebo_release }}

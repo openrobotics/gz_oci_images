@@ -30,15 +30,14 @@ on:
         default: "gazebo"
         type: string
 
-permissions:
-      packages: write
-      contents: read
-
 jobs:
 
   build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-22.04
+    permissions:
+      packages: write
+      contents: read
     steps:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be  # v1.3.1
@@ -57,6 +56,8 @@ jobs:
           version: v0.8.15
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+        with:
+          persist-credentials: false
 
       - name: Log in to ghcr.io
         uses: Wandalen/wretry.action@62451a214c01d1b0136b4f87289d840b30d67b98  # v1.4.4
@@ -70,10 +71,16 @@ jobs:
             registry: ${{ inputs.image_registry }}
 
       - name: Build and Push Images
-        run: earthly --ci --push +${{ inputs.gazebo_release }}-multiarch --registry=${{ inputs.image_registry }}/ --image_name=${{ inputs.image_name }}
+        run: earthly --ci --push +${INPUTS_GAZEBO_RELEASE}-multiarch --registry=${INPUTS_IMAGE_REGISTRY}/ --image_name=${INPUTS_IMAGE_NAME}
+        env:
+          INPUTS_GAZEBO_RELEASE: ${{ inputs.gazebo_release }}
+          INPUTS_IMAGE_REGISTRY: ${{ inputs.image_registry }}
+          INPUTS_IMAGE_NAME: ${{ inputs.image_name }}
 
   call-test-deployed-images:
     needs: build-and-deploy
+    permissions:
+      contents: read
     uses: ./.github/workflows/test-deployed-images-one-gazebo-release.yaml
     with:
       gazebo_release: ${{ inputs.gazebo_release }}

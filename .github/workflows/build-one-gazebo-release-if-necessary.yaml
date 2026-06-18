@@ -30,14 +30,12 @@ on:
         default: "gazebo"
         type: string
 
-permissions:
-      packages: write
-      contents: read
-
 jobs:
 
   check_for_update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     container:
       image: "${{ inputs.image_registry }}/${{ inputs.image_name }}:${{ inputs.gazebo_release }}-full"
     outputs:
@@ -45,17 +43,24 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+        with:
+          persist-credentials: false
       - name: Check if update is available
         id: do_check
         run: |
           apt-get update
-          result=$(./scripts/is_new_version_available.py --apt-package "gz-${{ inputs.gazebo_release }}")
+          result=$(./scripts/is_new_version_available.py --apt-package "gz-${INPUTS_GAZEBO_RELEASE}")
           echo "${result}"
           echo "needs_update=${result}" >> "${GITHUB_OUTPUT}"
+        env:
+          INPUTS_GAZEBO_RELEASE: ${{ inputs.gazebo_release }}
 
   call-build-and-deploy:
     needs: check_for_update
     if: needs.check_for_update.outputs.needs_update == 'YES'
+    permissions:
+      packages: write
+      contents: read
     uses: ./.github/workflows/build-one-gazebo-release.yaml
     with:
       gazebo_release: ${{ inputs.gazebo_release }}
